@@ -64,17 +64,17 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				brand: {
-					50: '#eef4ff',
-					100: '#d9e7ff',
-					200: '#bcd4ff',
-					300: '#8eb7ff',
-					400: '#5b90ff',
-					500: '#3366ff',
-					600: '#1a44f3',
-					700: '#1435e0',
-					800: '#172db6',
-					900: '#192c90',
-					950: '#141a4d',
+					50: '#eaeefb',
+					100: '#d4def7',
+					200: '#a9bcef',
+					300: '#7d9ae6',
+					400: '#5278de',
+					500: '#2F55D4', // Our primary blue
+					600: '#2544aa',
+					700: '#1b337f',
+					800: '#122255',
+					900: '#09112b',
+					950: '#050914',
 				},
 				success: {
 					50: '#ecfdf5',
@@ -103,11 +103,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'slide-in-right': {
+					'0%': { transform: 'translateX(100%)' },
+					'100%': { transform: 'translateX(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-in-right': 'slide-in-right 0.3s ease-out'
 			}
 		}
 	},
