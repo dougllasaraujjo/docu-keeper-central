@@ -1,9 +1,8 @@
 
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "./AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
+import { AppHeader } from "./AppHeader";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -33,16 +32,11 @@ export function AppLayout({ children, requiredPermission }: AppLayoutProps) {
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar />
-        <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden bg-gray-50">
-          <div className="p-4 md:p-6 flex-1">
-            <SidebarTrigger className="md:hidden mb-4" />
-            {children}
-          </div>
-        </div>
-      </div>
-    </SidebarProvider>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <AppHeader />
+      <main className="flex-1 container py-6 px-4 md:px-6">
+        {children}
+      </main>
+    </div>
   );
 }
