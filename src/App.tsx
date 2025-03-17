@@ -34,6 +34,12 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clientes" element={<ClientesList />} />
+            <Route path="/documentos" element={<NotFound />} />
+            <Route path="/purchase-orders" element={<NotFound />} />
+            <Route path="/relatorios" element={<NotFound />} />
+            <Route path="/usuarios" element={<NotFound />} />
+            <Route path="/perfil" element={<NotFound />} />
+            <Route path="/configuracoes" element={<NotFound />} />
             <Route path="/sem-permissao" element={<NotPermitted />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

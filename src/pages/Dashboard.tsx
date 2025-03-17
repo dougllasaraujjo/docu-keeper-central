@@ -15,10 +15,16 @@ import {
   TrendingUp, 
   Clock, 
   Calendar,
-  ArrowUpRight
+  ArrowUpRight,
+  ArrowRight,
+  FileCheck,
+  BarChart4
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -26,6 +32,7 @@ const Dashboard = () => {
   const [documentos, setDocumentos] = useState<Documento[]>([]);
   const [pos, setPos] = useState<PurchaseOrder[]>([]);
   const [proximosVencimentos, setProximosVencimentos] = useState<Documento[]>([]);
+  const [documentosRecentes, setDocumentosRecentes] = useState<Documento[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -51,6 +58,13 @@ const Dashboard = () => {
           .sort((a, b) => a.dataFim.getTime() - b.dataFim.getTime());
 
         setProximosVencimentos(docProximosVencimentos);
+
+        // Documentos recentes (últimos 2)
+        const docRecentes = [...documentosData]
+          .sort((a, b) => b.dataInicio.getTime() - a.dataInicio.getTime())
+          .slice(0, 2);
+        
+        setDocumentosRecentes(docRecentes);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
@@ -80,6 +94,42 @@ const Dashboard = () => {
     }, 0);
 
   const valorTotalPOs = pos.reduce((sum, po) => sum + po.valor, 0);
+  const valorUtilizadoPOs = pos.reduce((sum, po) => sum + (po.valorUtilizado || 0), 0);
+  const percentUtilizado = valorTotalPOs > 0 ? (valorUtilizadoPOs / valorTotalPOs) * 100 : 0;
+
+  // Dados para o gráfico
+  const chartData = [
+    {
+      name: 'Jan',
+      documentos: 4,
+      pos: 2,
+    },
+    {
+      name: 'Fev',
+      documentos: 3,
+      pos: 1,
+    },
+    {
+      name: 'Mar',
+      documentos: 5,
+      pos: 3,
+    },
+    {
+      name: 'Abr',
+      documentos: 2,
+      pos: 4,
+    },
+    {
+      name: 'Mai',
+      documentos: 6,
+      pos: 3,
+    },
+    {
+      name: 'Jun',
+      documentos: 4,
+      pos: 5,
+    },
+  ];
 
   if (loading) {
     return (
@@ -101,49 +151,39 @@ const Dashboard = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-muted-foreground mt-1">
-              Visão geral do sistema de gestão de contratos e POs
+              Visão geral dos seus documentos e ordens de compra
             </p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Card className="bg-brand-50 border-brand-100">
-              <CardContent className="py-2 px-3 flex items-center">
-                <Calendar className="h-4 w-4 text-brand-500 mr-2" />
-                <span className="text-sm font-medium">
-                  {format(new Date(), "dd 'de' MMMM, yyyy", { locale: ptBR })}
-                </span>
-              </CardContent>
-            </Card>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="md:hidden"
+              onClick={() => {}}
+            >
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Novo Documento
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="md:hidden"
+              onClick={() => {}}
+            >
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Nova PO
+            </Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="overflow-hidden border-none shadow-lg hover-scale cursor-pointer bg-gradient-to-br from-white to-brand-50" onClick={() => navigate("/clientes")}>
+          <Card className="overflow-hidden border shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white" onClick={() => navigate("/documentos")}>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Clientes Ativos
-              </CardTitle>
-              <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
-                <Users className="h-5 w-5 text-brand-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-gray-900">{clientesAtivos}</div>
-              <div className="flex items-center mt-1">
-                <p className="text-xs text-muted-foreground">
-                  de um total de {clientes.length} clientes
-                </p>
-                <ArrowUpRight className="h-4 w-4 ml-auto text-brand-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="overflow-hidden border-none shadow-lg hover-scale cursor-pointer bg-gradient-to-br from-white to-brand-50" onClick={() => navigate("/documentos")}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-gray-600">
                 Documentos Ativos
               </CardTitle>
-              <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
-                <FileText className="h-5 w-5 text-brand-600" />
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <FileSignature className="h-5 w-5 text-primary" />
               </div>
             </CardHeader>
             <CardContent>
@@ -152,64 +192,182 @@ const Dashboard = () => {
                 <p className="text-xs text-muted-foreground">
                   de um total de {documentos.length} documentos
                 </p>
-                <ArrowUpRight className="h-4 w-4 ml-auto text-brand-500" />
+                <div className="ml-auto rounded-full bg-primary/5 p-1">
+                  <ArrowRight className="h-3 w-3 text-primary" />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-none shadow-lg hover-scale bg-gradient-to-br from-white to-brand-50">
+          <Card className="overflow-hidden border shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white" onClick={() => navigate("/purchase-orders")}>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Valor Total de Contratos
+              <CardTitle className="text-sm font-medium text-gray-600">
+                POs Ativas
               </CardTitle>
-              <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-brand-600" />
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <FileCheck className="h-5 w-5 text-primary" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-gray-900">{pos.filter(p => p.ativo).length}</div>
+              <div className="flex items-center mt-1">
+                <p className="text-xs text-muted-foreground">
+                  de um total de {pos.length} POs
+                </p>
+                <div className="ml-auto rounded-full bg-primary/5 p-1">
+                  <ArrowRight className="h-3 w-3 text-primary" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden border shadow-sm hover:shadow-md transition-shadow bg-white">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Valor Total Faturado
+              </CardTitle>
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <BarChart4 className="h-5 w-5 text-primary" />
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-gray-900">
-                {valorTotalContratos.toLocaleString("pt-BR", {
+                {valorUtilizadoPOs.toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL",
                 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Valor acumulado de todos os contratos ativos
+                Total de 3 notas fiscais
               </p>
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-none shadow-lg hover-scale cursor-pointer bg-gradient-to-br from-white to-brand-50" onClick={() => navigate("/purchase-orders")}>
+          <Card className="overflow-hidden border shadow-sm hover:shadow-md transition-shadow bg-white">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Valor Total de POs
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Alertas
               </CardTitle>
-              <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
-                <Clock className="h-5 w-5 text-brand-600" />
+              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                <AlertTriangle className="h-5 w-5 text-amber-600" />
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-gray-900">
-                {valorTotalPOs.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
+                {proximosVencimentos.length}
               </div>
-              <div className="flex items-center mt-1">
-                <p className="text-xs text-muted-foreground">
-                  Total de {pos.length} POs cadastradas
-                </p>
-                <ArrowUpRight className="h-4 w-4 ml-auto text-brand-500" />
+              <p className="text-xs text-muted-foreground mt-1">
+                POs expirando nos próximos 60 dias
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="border shadow-sm overflow-hidden">
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>Uso de POs</CardTitle>
+                <Button variant="ghost" size="sm" className="gap-1 text-xs" onClick={() => navigate('/purchase-orders')}>
+                  Ver detalhes
+                  <ArrowRight className="h-3 w-3" />
+                </Button>
+              </div>
+              <CardDescription>
+                Consumo total de ordens de compra
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row justify-between mb-6">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Valor Total</p>
+                  <p className="text-2xl font-bold">
+                    {valorTotalPOs.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Utilizado</p>
+                  <p className="text-2xl font-bold">
+                    {valorUtilizadoPOs.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="font-medium">{percentUtilizado.toFixed(1)}% utilizado</span>
+                </div>
+                <Progress value={percentUtilizado} className="h-2" indicatorClassName="bg-primary" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border shadow-sm overflow-hidden">
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>Documentos Recentes</CardTitle>
+                <Button variant="ghost" size="sm" className="gap-1 text-xs" onClick={() => navigate('/documentos')}>
+                  Ver todos
+                  <ArrowRight className="h-3 w-3" />
+                </Button>
+              </div>
+              <CardDescription>
+                Últimos documentos adicionados ao sistema
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y">
+                {documentosRecentes.map((doc) => {
+                  const cliente = clientes.find(c => c.id === doc.clienteId);
+                  return (
+                    <div key={doc.id} className="flex items-center p-4 hover:bg-gray-50">
+                      <div className={`w-10 h-10 rounded-md flex items-center justify-center ${doc.ativo ? 'bg-green-100' : 'bg-gray-100'}`}>
+                        <FileText className={`h-5 w-5 ${doc.ativo ? 'text-green-600' : 'text-gray-500'}`} />
+                      </div>
+                      <div className="ml-4 flex-1">
+                        <p className="font-medium text-sm">{doc.nomeProjeto}</p>
+                        <p className="text-xs text-muted-foreground">{cliente?.nomeFantasia}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${doc.ativo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                          {doc.ativo ? 'Ativo' : 'Inativo'}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {doc.valorTipo === 'Mensal' ? (
+                            `R$ ${doc.valor.toLocaleString('pt-BR')}/mês`
+                          ) : (
+                            `R$ ${doc.valor.toLocaleString('pt-BR')}`
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-gray-900 flex items-center">
-            <AlertTriangle className="h-5 w-5 mr-2 text-brand-500" />
-            Próximos Vencimentos
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center">
+              <AlertTriangle className="h-5 w-5 mr-2 text-amber-500" />
+              Próximos Vencimentos
+            </h2>
+            {proximosVencimentos.length > 0 && (
+              <Button variant="ghost" size="sm" className="gap-1 text-xs">
+                Ver todos
+                <ArrowRight className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+          
           {proximosVencimentos.length === 0 ? (
             <Card className="border-none shadow-md bg-gradient-to-r from-green-50 to-green-100 overflow-hidden">
               <CardContent className="pt-6">
@@ -251,7 +409,7 @@ const Dashboard = () => {
                 }
 
                 return (
-                  <Card key={doc.id} className={`border-none shadow-md bg-gradient-to-r ${bgColor} overflow-hidden hover-scale`}>
+                  <Card key={doc.id} className={`border-none shadow-md bg-gradient-to-r ${bgColor} overflow-hidden hover:shadow-lg transition-shadow`}>
                     <CardContent className="pt-6">
                       <div className="flex flex-col md:flex-row md:items-center">
                         <div className="flex mb-4 md:mb-0">

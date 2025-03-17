@@ -11,7 +11,11 @@ import {
   FileCheck,
   Menu,
   ChevronDown,
-  Bell
+  Bell,
+  PlusCircle,
+  Home,
+  Building,
+  BarChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -46,17 +50,17 @@ export function AppHeader() {
     {
       label: "Dashboard",
       path: "/dashboard",
-      icon: <FileText className="h-4 w-4 mr-2" />,
+      icon: <Home className="h-4 w-4 mr-2" />,
       visible: true,
     },
     {
       label: "Clientes",
       path: "/clientes",
-      icon: <Users className="h-4 w-4 mr-2" />,
+      icon: <Building className="h-4 w-4 mr-2" />,
       visible: hasPermission('documents'),
     },
     {
-      label: "Documentos/Contratos",
+      label: "Documentos",
       path: "/documentos",
       icon: <FileSignature className="h-4 w-4 mr-2" />,
       visible: hasPermission('documents'),
@@ -68,7 +72,13 @@ export function AppHeader() {
       visible: hasPermission('purchaseOrders'),
     },
     {
-      label: "Gerenciar Usuários",
+      label: "Relatórios",
+      path: "/relatorios",
+      icon: <BarChart className="h-4 w-4 mr-2" />,
+      visible: hasPermission('documents'),
+    },
+    {
+      label: "Usuários",
       path: "/usuarios",
       icon: <Settings className="h-4 w-4 mr-2" />,
       visible: hasPermission('users'),
@@ -82,10 +92,10 @@ export function AppHeader() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/dashboard" className="flex items-center">
-            <div className="rounded-md bg-brand-500 p-1 mr-2">
+            <div className="rounded-md bg-primary p-1 mr-2">
               <FileText className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-brand-500 to-brand-600 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
               DocuKeeper
             </span>
           </Link>
@@ -106,7 +116,7 @@ export function AppHeader() {
                     to={item.path}
                     className={cn(
                       "flex items-center py-2 px-3 text-sm rounded-md hover:bg-gray-100 transition-colors",
-                      isActive(item.path) ? "bg-brand-50 text-brand-600 font-medium" : "text-gray-600"
+                      isActive(item.path) ? "bg-primary/10 text-primary font-medium" : "text-gray-600"
                     )}
                   >
                     {item.icon}
@@ -126,8 +136,8 @@ export function AppHeader() {
                     <Link
                       to={item.path}
                       className={cn(
-                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-brand-50 hover:text-brand-600 focus:bg-brand-50 focus:text-brand-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                        isActive(item.path) ? "bg-brand-50 text-brand-600" : "text-gray-600"
+                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        isActive(item.path) ? "bg-primary/10 text-primary" : "text-gray-600"
                       )}
                     >
                       {item.label}
@@ -140,13 +150,38 @@ export function AppHeader() {
         </div>
 
         <div className="flex items-center gap-4">
+          <div className="flex gap-2">
+            {location.pathname === "/dashboard" && (
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="hidden md:flex"
+                onClick={() => {}}
+              >
+                <PlusCircle className="h-4 w-4 mr-1" />
+                Novo Documento
+              </Button>
+            )}
+            {location.pathname === "/dashboard" && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="hidden md:flex"
+                onClick={() => {}}
+              >
+                <PlusCircle className="h-4 w-4 mr-1" />
+                Nova PO
+              </Button>
+            )}
+          </div>
+          
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative text-gray-500 hover:text-brand-500"
+            className="relative text-gray-500 hover:text-primary"
           >
             <Bell className="h-5 w-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-brand-500"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"></span>
           </Button>
 
           <DropdownMenu>
@@ -154,7 +189,7 @@ export function AppHeader() {
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8 border border-gray-200">
                   <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-                  <AvatarFallback className="bg-brand-100 text-brand-600">{userInitials}</AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary">{userInitials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
