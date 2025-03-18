@@ -70,9 +70,8 @@ const DocumentosList = () => {
         fetchData();
     }, []);
 
-    const handleVerDetalhes = (id: string) => {
-        toast.info("Visualizando detalhes do documento " + id);
-        // navigate(`/documentos/${id}`);
+    const handleViewDocumento = (id: string) => {
+        navigate(`/documentos/${id}`);
     };
 
     const filteredDocumentos = documentos.filter((doc) => {
@@ -248,7 +247,8 @@ const DocumentosList = () => {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="icon"
-                                                                        onClick={() => handleVerDetalhes(doc.id)}
+                                                                        onClick={() => handleViewDocumento(doc.id)}
+                                                                        title="Visualizar documento"
                                                                     >
                                                                         <Eye className="h-4 w-4" />
                                                                     </Button>

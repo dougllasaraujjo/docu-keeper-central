@@ -57,9 +57,8 @@ const PurchaseOrdersList = () => {
         fetchData();
     }, []);
 
-    const handleVerDetalhes = (id: string) => {
-        toast.info("Visualizando detalhes da PO " + id);
-        // navigate(`/purchase-orders/${id}`);
+    const handleViewPO = (id: string) => {
+        navigate(`/purchase-orders/${id}`);
     };
 
     const filteredPOs = pos.filter((po) => {
@@ -235,7 +234,8 @@ const PurchaseOrdersList = () => {
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
-                                                                onClick={() => handleVerDetalhes(po.id)}
+                                                                onClick={() => handleViewPO(po.id)}
+                                                                title="Visualizar PO"
                                                             >
                                                                 <Eye className="h-4 w-4" />
                                                             </Button>

@@ -12,7 +12,9 @@ import NotFound from "./pages/NotFound";
 import NotPermitted from "./pages/NotPermitted";
 import ClientesList from "./pages/Clientes/ClientesList";
 import DocumentosList from "./pages/Documentos/DocumentosList";
+import DocumentoView from "./pages/Documentos/DocumentoView";
 import PurchaseOrdersList from "./pages/PurchaseOrders/PurchaseOrdersList";
+import PurchaseOrderView from "./pages/PurchaseOrders/PurchaseOrderView";
 import RelatoriosList from "./pages/Relatorios/RelatoriosList";
 import UsuariosList from "./pages/Usuarios/UsuariosList";
 
@@ -38,7 +40,9 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clientes" element={<ClientesList />} />
             <Route path="/documentos" element={<DocumentosList />} />
+            <Route path="/documentos/:id" element={<DocumentoView />} />
             <Route path="/purchase-orders" element={<PurchaseOrdersList />} />
+            <Route path="/purchase-orders/:id" element={<PurchaseOrderView />} />
             <Route path="/relatorios" element={<RelatoriosList />} />
             <Route path="/usuarios" element={<UsuariosList />} />
             <Route path="/perfil" element={<NotFound />} />
