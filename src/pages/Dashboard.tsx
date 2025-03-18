@@ -7,18 +7,20 @@ import { dataService } from "@/services/dataService";
 import { Cliente, Documento, PurchaseOrder } from "@/types";
 import { format, addDays, differenceInDays, isBefore } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { 
-  FileText, 
-  AlertTriangle, 
-  CheckCircle, 
-  Users, 
-  TrendingUp, 
-  Clock, 
+import {
+  FileText,
+  AlertTriangle,
+  CheckCircle,
+  Users,
+  TrendingUp,
+  Clock,
   Calendar,
   ArrowUpRight,
   ArrowRight,
   FileCheck,
-  BarChart4
+  BarChart4,
+  PlusCircle,
+  FileSignature
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +65,7 @@ const Dashboard = () => {
         const docRecentes = [...documentosData]
           .sort((a, b) => b.dataInicio.getTime() - a.dataInicio.getTime())
           .slice(0, 2);
-        
+
         setDocumentosRecentes(docRecentes);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
@@ -155,20 +157,20 @@ const Dashboard = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button 
-              variant="default" 
-              size="sm" 
+            <Button
+              variant="default"
+              size="sm"
               className="md:hidden"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <PlusCircle className="h-4 w-4 mr-1" />
               Novo Documento
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="md:hidden"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <PlusCircle className="h-4 w-4 mr-1" />
               Nova PO
@@ -298,7 +300,7 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="space-y-1">
                 <div className="flex justify-between text-xs">
                   <span className="font-medium">{percentUtilizado.toFixed(1)}% utilizado</span>
@@ -367,7 +369,7 @@ const Dashboard = () => {
               </Button>
             )}
           </div>
-          
+
           {proximosVencimentos.length === 0 ? (
             <Card className="border-none shadow-md bg-gradient-to-r from-green-50 to-green-100 overflow-hidden">
               <CardContent className="pt-6">

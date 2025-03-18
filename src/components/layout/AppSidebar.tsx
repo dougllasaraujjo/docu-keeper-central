@@ -28,10 +28,10 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <h2 className="text-xl font-bold text-white">DocuKeeper</h2>
+        <h2 className="text-xl font-bold text-white">EnextDoc</h2>
         <p className="text-xs text-slate-400">Gestão de Contratos e POs</p>
       </SidebarHeader>
-      
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navegação</SidebarGroupLabel>
@@ -45,7 +45,7 @@ export function AppSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               {hasPermission('documents') && (
                 <>
                   <SidebarMenuItem>
@@ -66,7 +66,7 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 </>
               )}
-              
+
               {hasPermission('purchaseOrders') && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild className={isActive('/purchase-orders') ? 'bg-sidebar-accent text-white' : ''}>
@@ -77,7 +77,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )}
-              
+
               {hasPermission('users') && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild className={isActive('/usuarios') ? 'bg-sidebar-accent text-white' : ''}>
@@ -92,12 +92,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      
+
       <SidebarFooter>
         <div className="p-4">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start text-sidebar-foreground hover:text-white hover:bg-sidebar-accent" 
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-sidebar-foreground hover:text-white hover:bg-sidebar-accent"
             onClick={logout}
           >
             <LogOut className="h-4 w-4 mr-2" />

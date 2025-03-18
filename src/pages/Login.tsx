@@ -55,7 +55,7 @@ const Login = () => {
       <div className="w-full max-w-md px-4">
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">DocuKeeper Central</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Enext Doc Central</CardTitle>
             <CardDescription className="text-center">
               Entre com suas credenciais para acessar o sistema
             </CardDescription>
@@ -104,7 +104,7 @@ const Login = () => {
           </CardContent>
           <CardFooter className="flex justify-center">
             <p className="text-sm text-muted-foreground">
-              Usuário demo: admin@docukeeper.com / Senha: admin
+              Usuário demo: admin@enextdoc.com / Senha: admin
             </p>
           </CardFooter>
         </Card>

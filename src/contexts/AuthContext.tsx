@@ -14,7 +14,7 @@ interface AuthContextType {
 const mockUser: User = {
   id: "1",
   name: "Administrador",
-  email: "admin@docukeeper.com",
+  email: "admin@enextdoc.com",
   role: "admin",
   permissions: {
     documents: true,
@@ -29,10 +29,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simula verificação de autenticação ao carregar a página
   useEffect(() => {
     const checkAuth = () => {
-      const savedUser = localStorage.getItem("docukeeper_user");
+      const savedUser = localStorage.getItem("enextdoc_user");
       if (savedUser) {
         setUser(JSON.parse(savedUser));
       }
@@ -43,15 +42,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Simulação de login - em produção, conectaria a um backend real
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simula chamada de API
-      
-      // Valida o usuário (em produção, isso seria uma chamada de API)
-      if (email === "admin@docukeeper.com" && password === "admin") {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (email === "admin@enextdoc.com" && password === "admin") {
         setUser(mockUser);
-        localStorage.setItem("docukeeper_user", JSON.stringify(mockUser));
+        localStorage.setItem("enextdoc_user", JSON.stringify(mockUser));
       } else {
         throw new Error("Credenciais inválidas");
       }
@@ -64,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("docukeeper_user");
+    localStorage.removeItem("enextdoc_user");
   };
 
   const hasPermission = (module: "documents" | "purchaseOrders" | "users") => {

@@ -2,12 +2,12 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { 
-  FileText, 
-  FileSignature, 
-  Users, 
-  Settings, 
-  LogOut, 
+import {
+  FileText,
+  FileSignature,
+  Users,
+  Settings,
+  LogOut,
   FileCheck,
   Menu,
   ChevronDown,
@@ -96,7 +96,7 @@ export function AppHeader() {
               <FileText className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-              DocuKeeper
+              EnextDoc
             </span>
           </Link>
 
@@ -152,32 +152,32 @@ export function AppHeader() {
         <div className="flex items-center gap-4">
           <div className="flex gap-2">
             {location.pathname === "/dashboard" && (
-              <Button 
-                variant="default" 
-                size="sm" 
+              <Button
+                variant="default"
+                size="sm"
                 className="hidden md:flex"
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Novo Documento
               </Button>
             )}
             {location.pathname === "/dashboard" && (
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 className="hidden md:flex"
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
                 Nova PO
               </Button>
             )}
           </div>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
+
+          <Button
+            variant="ghost"
+            size="icon"
             className="relative text-gray-500 hover:text-primary"
           >
             <Bell className="h-5 w-5" />
@@ -214,7 +214,7 @@ export function AppHeader() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="cursor-pointer text-red-500 focus:text-red-500"
                 onClick={logout}
               >
