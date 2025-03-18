@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,10 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import NotPermitted from "./pages/NotPermitted";
 import ClientesList from "./pages/Clientes/ClientesList";
+import DocumentosList from "./pages/Documentos/DocumentosList";
+import PurchaseOrdersList from "./pages/PurchaseOrders/PurchaseOrdersList";
+import RelatoriosList from "./pages/Relatorios/RelatoriosList";
+import UsuariosList from "./pages/Usuarios/UsuariosList";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,10 +37,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clientes" element={<ClientesList />} />
-            <Route path="/documentos" element={<NotFound />} />
-            <Route path="/purchase-orders" element={<NotFound />} />
-            <Route path="/relatorios" element={<NotFound />} />
-            <Route path="/usuarios" element={<NotFound />} />
+            <Route path="/documentos" element={<DocumentosList />} />
+            <Route path="/purchase-orders" element={<PurchaseOrdersList />} />
+            <Route path="/relatorios" element={<RelatoriosList />} />
+            <Route path="/usuarios" element={<UsuariosList />} />
             <Route path="/perfil" element={<NotFound />} />
             <Route path="/configuracoes" element={<NotFound />} />
             <Route path="/sem-permissao" element={<NotPermitted />} />
