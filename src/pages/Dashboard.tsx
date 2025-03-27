@@ -8,6 +8,8 @@ import { Cliente, Documento, PurchaseOrder } from "@/types";
 import { format, addDays, differenceInDays, isBefore } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
+import WelcomeModal from '@/components/WelcomeModal';
+
   FileText,
   AlertTriangle,
   CheckCircle,
@@ -20,6 +22,7 @@ import {
   FileCheck,
   BarChart4,
   PlusCircle,
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
   FileSignature
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -147,7 +150,9 @@ const Dashboard = () => {
   }
 
   return (
+{showWelcomeModal && <WelcomeModal onClose={() => setShowWelcomeModal(false)} />}
     <AppLayout>
+
       <div className="space-y-8 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const WelcomeModal = () => {
+const WelcomeModal = ({ onClose }) => {
   const [slideIndex, setSlideIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -33,6 +33,7 @@ const WelcomeModal = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+    if (onClose) onClose();
   };
 
   if (!isOpen) return null;
