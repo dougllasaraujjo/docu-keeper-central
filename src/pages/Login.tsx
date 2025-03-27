@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Eye, EyeOff, LogIn } from "lucide-react";
+import { WelcomeModal } from "@/components/ui/welcome-modal";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido").min(1, "Email é obrigatório"),
@@ -28,6 +29,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -42,7 +44,7 @@ const Login = () => {
     try {
       await login(data.email, data.password);
       toast.success("Login realizado com sucesso!");
-      navigate("/dashboard");
+      setShowWelcomeModal(true);
     } catch (error) {
       console.error(error);
       toast.error("Credenciais inválidas. Tente novamente.");
@@ -163,6 +165,13 @@ const Login = () => {
           </CardFooter>
         </Card>
       </div>
+      <WelcomeModal
+        isOpen={showWelcomeModal}
+        onClose={() => {
+          setShowWelcomeModal(false);
+          navigate("/dashboard");
+        }}
+      />
     </div>
   );
 };
