@@ -3,6 +3,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 
 interface WelcomeModalProps {
   isOpen: boolean;
@@ -25,14 +27,53 @@ const carouselItems = [
     description: "Compartilhe e trabalhe em documentos em tempo real.",
     image: "/welcome-3.svg",
   },
+  {
+    title: "Fique por dentro das novidades",
+    description: "Cadastre-se para receber atualizações e dicas exclusivas.",
+    type: "form",
+  },
 ];
 
 export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!email || !phone) {
+      toast({
+        title: "Erro",
+        description: "Por favor, preencha todos os campos.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Simulando envio para API fictícia
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Sucesso!",
+        description: "Seus dados foram cadastrados com sucesso.",
+      });
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao enviar seus dados. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const nextSlide = () => {
     if (currentSlide === carouselItems.length - 1) {
-      onClose();
+      handleSubmit();
     } else {
       setCurrentSlide((prev) => prev + 1);
     }
@@ -55,17 +96,42 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
                 <Card className="border-0">
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center space-y-4">
-                      <div className="w-48 h-48 mb-4">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <h2 className="text-2xl font-bold text-gray-900">
-                        {item.title}
-                      </h2>
-                      <p className="text-gray-600">{item.description}</p>
+                      {item.type === "form" ? (
+                        <div className="space-y-4 w-full max-w-sm">
+                          <h2 className="text-2xl font-bold text-gray-900">
+                            {item.title}
+                          </h2>
+                          <p className="text-gray-600">{item.description}</p>
+                          <div className="space-y-3">
+                            <Input
+                              type="email"
+                              placeholder="Seu e-mail"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <Input
+                              type="tel"
+                              placeholder="Seu telefone"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="w-48 h-48 mb-4">
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <h2 className="text-2xl font-bold text-gray-900">
+                            {item.title}
+                          </h2>
+                          <p className="text-gray-600">{item.description}</p>
+                        </>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -107,7 +173,7 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
               className="rounded-full"
             >
               {currentSlide === carouselItems.length - 1 ? (
-                "Começar"
+                isSubmitting ? "Enviando..." : "Cadastrar"
               ) : (
                 <ChevronRight className="h-4 w-4" />
               )}
