@@ -58,7 +58,7 @@ const Login = () => {
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-700">Enext Doc Central</h1>
-          <p className="text-gray-600 mt-2">Sistema de Gerenciamento de Documentos</p>
+          <p className="text-gray-600 mt-2">Gestao de documentos empresariais</p>
         </div>
 
         <Card className="border-0 shadow-lg">
