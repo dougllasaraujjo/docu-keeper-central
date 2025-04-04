@@ -134,6 +134,45 @@ const Login = () => {
                     </>
                   )}
                 </Button>
+                <Button
+                  variant="outline"
+                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
+                  onClick={() => {
+                    // Add your registration logic here
+                  }}
+                >
+                  Cadastrar
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
+                  onClick={() => {
+                    // Add your registration logic here
+                  }}
+                >
+                  Cadastrar
+                </Button>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
+                  onClick={() => {
+                    // Add your registration logic here
+                  }}
+                >
+                  Cadastrar
+                </Button>
+                  {isLoading ? (
+                    <>
+                      <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] mr-2"></div>
+                      Entrando...
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2 h-4 w-4" /> Entrar
+                    </>
+                  )}
+                </Button>
               </form>
             </Form>
 
