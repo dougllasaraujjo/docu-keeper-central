@@ -52,10 +52,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 to-green-100">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-700">Enext Doc Central</h1>
+          <h1 className="text-3xl font-bold text-green-700">Enext Doc Central</h1>
           <p className="text-gray-600 mt-2">Sistema de Gerenciamento de Documentos</p>
         </div>
 
@@ -118,7 +118,7 @@ const Login = () => {
 
                 <Button
                   type="submit"
-                  className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium mt-2"
+                  className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium mt-2"
                   disabled={isLoading}
                 >
                   {isLoading ? (
