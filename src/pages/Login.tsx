@@ -17,7 +17,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { WelcomeModal } from "@/components/ui/welcome-modal";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido").min(1, "Email é obrigatório"),
@@ -29,7 +28,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -44,7 +42,7 @@ const Login = () => {
     try {
       await login(data.email, data.password);
       toast.success("Login realizado com sucesso!");
-      setShowWelcomeModal(true);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       toast.error("Credenciais inválidas. Tente novamente.");
@@ -58,7 +56,7 @@ const Login = () => {
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-700">Enext Doc Central</h1>
-          <p className="text-gray-600 mt-2">Sistema feito para a enext gerenciar documentos</p>
+          <p className="text-gray-600 mt-2">Sistema de Gerenciamento de Documentos</p>
         </div>
 
         <Card className="border-0 shadow-lg">
@@ -134,45 +132,6 @@ const Login = () => {
                     </>
                   )}
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
-                  onClick={() => {
-                    // Add your registration logic here
-                  }}
-                >
-                  Cadastrar
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
-                  onClick={() => {
-                    // Add your registration logic here
-                  }}
-                >
-                  Cadastrar
-                </Button>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full mt-2 border-gray-300 text-gray-700 font-normal hover:bg-gray-50"
-                  onClick={() => {
-                    // Add your registration logic here
-                  }}
-                >
-                  Cadastrar
-                </Button>
-                  {isLoading ? (
-                    <>
-                      <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] mr-2"></div>
-                      Entrando...
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2 h-4 w-4" /> Entrar
-                    </>
-                  )}
-                </Button>
               </form>
             </Form>
 
@@ -204,13 +163,6 @@ const Login = () => {
           </CardFooter>
         </Card>
       </div>
-      <WelcomeModal
-        isOpen={showWelcomeModal}
-        onClose={() => {
-          setShowWelcomeModal(false);
-          navigate("/dashboard");
-        }}
-      />
     </div>
   );
 };
