@@ -7,6 +7,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  register: (email: string, password: string) => Promise<void>;
   isAuthenticated: boolean;
   hasPermission: (module: "documents" | "purchaseOrders" | "users") => boolean;
 }
@@ -50,7 +51,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(mockUser);
         localStorage.setItem("enextdoc_user", JSON.stringify(mockUser));
       } else {
-        throw new Error("Credenciais inválidas");
+        const stored = localStorage.getItem("enextdoc_registered_users");
+        const users = stored ? JSON.parse(stored) : [];
+        const foundUser = users.find((user: any) => user.email === email && user.password === password);
+        if (foundUser) {
+          setUser(foundUser);
+          localStorage.setItem("enextdoc_user", JSON.stringify(foundUser));
+        } else {
+          throw new Error("Credenciais inválidas");
+        }
       }
     } catch (error) {
       throw error;
@@ -58,6 +67,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false);
     }
   };
+
+const register = async (email: string, password: string) => {
+  setIsLoading(true);
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const stored = localStorage.getItem("enextdoc_registered_users");
+    let users = stored ? JSON.parse(stored) : [];
+    if (users.some((u: any) => u.email === email)) {
+      throw new Error("Usuário já cadastrado");
+    }
+    const newUser = {
+      id: (users.length + 1).toString(),
+      name: email,
+      email,
+      role: "user",
+      permissions: {
+        documents: true,
+        purchaseOrders: false,
+        users: false,
+      },
+      password,
+    };
+    users.push(newUser);
+    localStorage.setItem("enextdoc_registered_users", JSON.stringify(users));
+  } catch (error) {
+    throw error;
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const logout = () => {
     setUser(null);
@@ -76,6 +115,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logout,
     isAuthenticated: !!user,
     hasPermission,
+    register,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -88,3 +128,6 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export { AuthContext };
+

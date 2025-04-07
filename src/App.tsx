@@ -8,7 +8,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 // Páginas
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+
 import NotPermitted from "./pages/NotPermitted";
 import ClientesList from "./pages/Clientes/ClientesList";
 import DocumentosList from "./pages/Documentos/DocumentosList";
@@ -37,6 +39,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clientes" element={<ClientesList />} />
             <Route path="/documentos" element={<DocumentosList />} />
@@ -45,7 +48,6 @@ const App = () => (
             <Route path="/purchase-orders/:id" element={<PurchaseOrderView />} />
             <Route path="/relatorios" element={<RelatoriosList />} />
             <Route path="/usuarios" element={<UsuariosList />} />
-            <Route path="/perfil" element={<NotFound />} />
             <Route path="/configuracoes" element={<NotFound />} />
             <Route path="/sem-permissao" element={<NotPermitted />} />
             <Route path="*" element={<NotFound />} />

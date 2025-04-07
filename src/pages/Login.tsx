@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 to-green-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-orange-50 to-orange-100">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-green-700">Enext Doc Central</h1>
@@ -134,6 +134,14 @@ const Login = () => {
                 </Button>
               </form>
             </Form>
+
+            <Button
+              type="button"
+              className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-medium mt-2"
+              onClick={() => navigate('/register')}
+            >
+              Cadastrar
+            </Button>
 
             <div className="relative mt-8 mb-2">
               <div className="absolute inset-0 flex items-center">
